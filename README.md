@@ -12,6 +12,6 @@ To address this challenge, it’s required to construct a Maximum Spanning Tree 
   * Reading input from Excel files using EppPlus library and extracting information from it.
   * Constructing the graph by building an adjacency list.
   * Building the MST for each component using DSU data structure.
-  * Calculating statistics for each component in the graph (avg similarity, component nodes, and component nodes count).
+  * Calculating statistics for each component in the graph (average similarity, component vertices, and component vertices count).
   * Writing the output in Excel files using EppPlus Library.
   * Running test cases and measuring the running time of each one.

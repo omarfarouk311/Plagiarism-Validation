@@ -12,7 +12,7 @@ using OfficeOpenXml;
 
 public static class Project
 {
-    static string[] sample_paths = {
+    static string[] sample_cases = {
         @"D:\Algo\Algo project\Test Cases\Sample\1-Input.xlsx",
         @"D:\Algo\Algo project\Test Cases\Sample\2-Input.xlsx",
         @"D:\Algo\Algo project\Test Cases\Sample\3-Input.xlsx",
@@ -21,17 +21,17 @@ public static class Project
         @"D:\Algo\Algo project\Test Cases\Sample\6-Input.xlsx",
     };
 
-    static string[] easy_paths = {
+    static string[] easy_cases = {
         @"D:\Algo\Algo project\Test Cases\Complete\Easy\1-Input.xlsx",
         @"D:\Algo\Algo project\Test Cases\Complete\Easy\2-Input.xlsx",
     };
 
-    static string[] medium_paths = {
+    static string[] medium_cases = {
         @"D:\Algo\Algo project\Test Cases\Complete\Medium\1-Input.xlsx",
         @"D:\Algo\Algo project\Test Cases\Complete\Medium\2-Input.xlsx",
     };
 
-    static string[] hard_paths = {
+    static string[] hard_cases = {
         @"D:\Algo\Algo project\Test Cases\Complete\Hard\1-Input.xlsx",
         @"D:\Algo\Algo project\Test Cases\Complete\Hard\2-Input.xlsx",
     };
@@ -43,8 +43,8 @@ public static class Project
     static List<(string, string, long, int, Uri, Uri)> mst_edges;
     static Dictionary<long, HashSet<long>> components;
     static Dictionary<long, float[]> avg;
-    static Stopwatch mst_sw = new Stopwatch(), stat_sw = new Stopwatch(), total_sw = new Stopwatch();
     static Dictionary<long, List<KeyValuePair<long, long>>> adj;
+    static Stopwatch mst_sw = new Stopwatch(), stat_sw = new Stopwatch(), total_sw = new Stopwatch();
 
     private static void init()
     {
@@ -216,7 +216,7 @@ public static class Project
         }
     }
 
-    public static void writeStatFile()
+    public static void writeStatFile(string directory, int cnt)
     {
         using (ExcelPackage excelPackage = new ExcelPackage())
         {
@@ -266,11 +266,11 @@ public static class Project
             worksheet.Column(3).AutoFit();
             worksheet.Column(4).AutoFit();
 
-            excelPackage.SaveAs(new FileInfo(@"D:\Algo\Algo project\stat file.xlsx"));
+            excelPackage.SaveAs(new FileInfo($@"D:\Algo\Algo project\{directory}\{cnt}-stat file{cnt}.xlsx"));
         }
     }
 
-    public static void writeMstFile()
+    public static void writeMstFile(string directory, int cnt)
     {
         using (ExcelPackage excelPackage = new ExcelPackage())
         {
@@ -325,146 +325,162 @@ public static class Project
             worksheet.Column(2).AutoFit();
             worksheet.Column(3).AutoFit();
 
-            excelPackage.SaveAs(new FileInfo(@"D:\Algo\Algo project\mst file.xlsx"));
+            excelPackage.SaveAs(new FileInfo($@"D:\Algo\Algo project\{directory}\{cnt}-mst file{cnt}.xlsx"));
+        }
+    }
+
+    public static void sampleCases()
+    {
+        Console.WriteLine("Running sample cases\n");
+        for (int i = 0; i < sample_cases.GetLength(0); ++i)
+        {
+            total_sw.Restart();
+
+            read(sample_cases[i]);
+            init();
+
+            mst_sw.Restart();
+            MST();
+            mst_sw.Stop();
+
+            stat_sw.Restart();
+            calculateStat();
+            stat_sw.Stop();
+
+            mst_sw.Start();
+            writeMstFile("sample cases output", i + 1);
+            mst_sw.Stop();
+
+            stat_sw.Start();
+            writeStatFile("sample cases output", i + 1);
+            stat_sw.Stop();
+
+            total_sw.Stop();
+
+            Console.WriteLine($"case {i + 1}:");
+            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
+        }
+
+        Console.WriteLine("\n");
+    }
+
+    public static void easyCases()
+    {
+        Console.WriteLine("Running complete easy cases\n");
+        for (int i = 0; i < easy_cases.GetLength(0); ++i)
+        {
+            total_sw.Restart();
+
+            read(easy_cases[i]);
+            init();
+
+            mst_sw.Restart();
+            MST();
+            mst_sw.Stop();
+
+            stat_sw.Restart();
+            calculateStat();
+            stat_sw.Stop();
+
+            mst_sw.Start();
+            writeMstFile("easy cases output", i + 1);
+            mst_sw.Stop();
+
+            stat_sw.Start();
+            writeStatFile("easy cases output", i + 1);
+            stat_sw.Stop();
+
+            total_sw.Stop();
+
+            Console.WriteLine($"case {i + 1}:");
+            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
+        }
+
+        Console.WriteLine("\n");
+    }
+
+    public static void mediumCases()
+    {
+        Console.WriteLine("Running complete medium cases\n");
+        for (int i = 0; i < medium_cases.GetLength(0); ++i)
+        {
+            total_sw.Restart();
+
+            read(medium_cases[i]);
+            init();
+
+            mst_sw.Restart();
+            MST();
+            mst_sw.Stop();
+
+            stat_sw.Restart();
+            calculateStat();
+            stat_sw.Stop();
+
+            mst_sw.Start();
+            writeMstFile("medium cases output", i + 1);
+            mst_sw.Stop();
+
+            stat_sw.Start();
+            writeStatFile("medium cases output", i + 1);
+            stat_sw.Stop();
+
+            total_sw.Stop();
+
+            Console.WriteLine($"case {i + 1}:");
+            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
+        }
+
+        Console.WriteLine("\n");
+    }
+
+    public static void hardCases()
+    {
+        Console.WriteLine("Running complete hard cases\n");
+        for (int i = 0; i < hard_cases.GetLength(0); ++i)
+        {
+            total_sw.Restart();
+
+            read(hard_cases[i]);
+            init();
+
+            mst_sw.Restart();
+            MST();
+            mst_sw.Stop();
+
+            stat_sw.Restart();
+            calculateStat();
+            stat_sw.Stop();
+
+            mst_sw.Start();
+            writeMstFile("hard cases output", i + 1);
+            mst_sw.Stop();
+
+            stat_sw.Start();
+            writeStatFile("hard cases output", i + 1);
+            stat_sw.Stop();
+
+            total_sw.Stop();
+
+            Console.WriteLine($"case {i + 1}:");
+            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
+            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
         }
     }
 
     public static void Main()
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-        Console.WriteLine("Running sample cases\n");
-        for (int i = 0; i < sample_paths.GetLength(0); ++i)
-        {
-            total_sw.Restart();
-
-            read(sample_paths[i]);
-            init();
-
-            mst_sw.Restart();
-            MST();
-            mst_sw.Stop();
-
-            stat_sw.Restart();
-            calculateStat();
-            stat_sw.Stop();
-
-            mst_sw.Start();
-            writeMstFile();
-            mst_sw.Stop();
-
-            stat_sw.Start();
-            writeStatFile();
-            stat_sw.Stop();
-
-            total_sw.Stop();
-
-            Console.WriteLine($"case {i + 1}:");
-            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
-        }
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Running complete easy cases\n");
-        for (int i = 0; i < easy_paths.GetLength(0); ++i)
-        {
-            total_sw.Restart();
-
-            read(easy_paths[i]);
-            init();
-
-            mst_sw.Restart();
-            MST();
-            mst_sw.Stop();
-
-            stat_sw.Restart();
-            calculateStat();
-            stat_sw.Stop();
-
-            mst_sw.Start();
-            writeMstFile();
-            mst_sw.Stop();
-
-            stat_sw.Start();
-            writeStatFile();
-            stat_sw.Stop();
-
-            total_sw.Stop();
-
-            Console.WriteLine($"case {i + 1}:");
-            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
-        }
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Running complete medium cases\n");
-        for (int i = 0; i < medium_paths.GetLength(0); ++i)
-        {
-            total_sw.Restart();
-
-            read(medium_paths[i]);
-            init();
-
-            mst_sw.Restart();
-            MST();
-            mst_sw.Stop();
-
-            stat_sw.Restart();
-            calculateStat();
-            stat_sw.Stop();
-
-            mst_sw.Start();
-            writeMstFile();
-            mst_sw.Stop();
-
-            stat_sw.Start();
-            writeStatFile();
-            stat_sw.Stop();
-
-            total_sw.Stop();
-
-            Console.WriteLine($"case {i + 1}:");
-            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
-        }
-
-        Console.WriteLine("\n");
-
-        Console.WriteLine("Running complete hard cases\n");
-        for (int i = 0; i < hard_paths.GetLength(0); ++i)
-        {
-            total_sw.Restart();
-
-            read(hard_paths[i]);
-            init();
-
-            mst_sw.Restart();
-            MST();
-            mst_sw.Stop();
-
-            stat_sw.Restart();
-            calculateStat();
-            stat_sw.Stop();
-
-            mst_sw.Start();
-            writeMstFile();
-            mst_sw.Stop();
-
-            stat_sw.Start();
-            writeStatFile();
-            stat_sw.Stop();
-
-            total_sw.Stop();
-
-            Console.WriteLine($"case {i + 1}:");
-            Console.WriteLine($"stat time is {stat_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"mst time is {mst_sw.ElapsedMilliseconds} ms");
-            Console.WriteLine($"total time is {total_sw.ElapsedMilliseconds} ms\n");
-        }
+        sampleCases();
+        easyCases();
+        mediumCases();
+        hardCases();
     }
 }

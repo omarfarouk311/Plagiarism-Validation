@@ -224,11 +224,7 @@ public static class Project
             int i = 0;
             foreach (var comp in components)
             {
-                List<long> tmp = new List<long>();
-                foreach (var j in comp.Value)
-                {
-                    tmp.Add(j);
-                }
+                List<long> tmp = [.. comp.Value];
                 tmp.Sort();
                 stat[i++] = (Math.Round(avg[comp.Key][0], 1), tmp);
             }

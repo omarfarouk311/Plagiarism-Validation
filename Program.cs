@@ -270,7 +270,7 @@ public static class Project
             worksheet.Column(3).AutoFit();
             worksheet.Column(4).AutoFit();
 
-            excelPackage.SaveAs(new FileInfo(@"D:\Algo\Algo project\output1.xlsx"));
+            excelPackage.SaveAs(new FileInfo(@"D:\Algo\Algo project\stat file.xlsx"));
         }
     }
 
@@ -329,7 +329,7 @@ public static class Project
             worksheet.Column(2).AutoFit();
             worksheet.Column(3).AutoFit();
 
-            excelPackage.SaveAs(new FileInfo(@"D:\Algo\Algo project\output2.xlsx"));
+            excelPackage.SaveAs(new FileInfo(@"D:\Algo\Algo project\mst file.xlsx"));
         }
     }
 
